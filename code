@@ -1,0 +1,82 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+struct bilet{
+    unsigned long long nr;
+    short g;
+};
+
+ifstream fin("vali.in");
+ofstream fout("vali.out");
+
+bool cmp(bilet a, bilet b){
+    return a.nr < b.nr;
+}
+
+short c;
+void cerinta(){
+    fin >> c;
+}
+
+bilet b[300069];
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    fin.tie(NULL);
+    fout.tie(NULL);
+    cerinta();
+    
+    int n;
+    fin >> n;
+    
+    for(int i = 1; i <= n; ++ i){
+        fin >> b[i].nr;
+        int nrCif = ceil(log10(b[i].nr));
+        b[i].g = b[i].nr / (unsigned long long)((pow(10, nrCif - 1)));
+        b[i].nr = 1ULL * b[i].nr % (unsigned long long)((pow(10, nrCif - 1)));
+    }
+    
+    sort(b + 1, b + 1 + n, cmp);
+    for(int i = 1; i <= n; ++ i){
+        int f = 0;
+        int m = 0;
+        
+        if(b[i].g == 1){
+            ++ m;
+        }
+        else{
+            ++ f;
+        }
+        
+        while(b[i].nr == b[i + 1].nr){
+            ++ i;
+            
+            if(b[i].g == 1){
+                ++ m;
+            }
+            else{
+                ++ f;
+            }
+        }
+        
+        if(!m or !f){
+            if(c == 1){
+                if(b[i].g == 1){
+                    fout << "valentin";
+                    return 0;
+                }   
+                
+                fout << "valentina";
+                return 0;
+            }
+            else{
+                fout << b[i].g << b[i].nr;
+                return 0;
+            }
+        }
+    }
+
+    return 0;
+}
